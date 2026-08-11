@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Sistema JS</title>
+    <meta charset="UTF-8">
+    <title>Sistema JS</title>
 </head>
 <body>
-<h1>Lista de tareas</h1>
 
-<input type="text" id="inputTarea" placeholder="Escribi algo">
-<button id="btnAgregar">Agregar</button>
+    <h1>Lista de tareas</h1>
 
-<ul id="listaTareas"></ul>
+    <input type="text" id="inputTarea" placeholder="Escribi algo">
+    <button id="btnAgregar">Agregar</button>
+
+    <ul id="listaTareas"></ul>
 
     <script>
-        
+        // agarrar los elementos
         var input = document.getElementById("inputTarea");
         var boton = document.getElementById("btnAgregar");
-        var lista = document.getElementById("listaTaread");
-        function agregarTarea() {
-        var texto = input.value;
+        var lista = document.getElementById("listaTareas");
 
-     
-        if (texto === "") {
-        alert("Escribi una tarea");
-        return;
+        // funcion para agregar
+        function agregarTarea() {
+            var texto = input.value;
+
+            // si esta vacio salta alerta
+            if (texto === "") {
+                alert("Escribi una tarea");
+                return;
             }
 
-            
-        var nuevoItem = document.createElement("li");
-        nuevoItem.textContent = texto;
-        lista.appendChild(nuevoItem);
-        input.value = "";
+            // crear item y meterlo a la lista
+            var nuevoItem = document.createElement("li");
+            nuevoItem.textContent = texto;
+            lista.appendChild(nuevoItem);
+
+            // borrar el texto del input
+            input.value = "";
         }
 
-        /
+        // boton para ejecutar la funcion
         boton.onclick = agregarTarea;
     </script>
 
