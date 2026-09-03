@@ -1,0 +1,94 @@
+RESUMEN DE RESPUESTAS
+Identificar entidades
+Cliente, Producto, Pedido, Empleado
+
+Atributos de cada entidad
+Cliente: ID_Cliente (simple), Nombre (simple), Direccion (simple), Telefono (simple), Email (multivaluado)
+Producto: Codigo (simple), Nombre (simple), Precio (simple), Stock (simple)
+Pedido: Numero_Pedido (simple), Fecha (simple), Estado (simple)
+Empleado: ID_Empleado (simple), Nombre (simple)
+
+Claves candidatas y clave primaria
+Cliente: Clave candidata ID_Cliente (o DNI/CUIL). Clave primaria ID_Cliente porque es un numero unico que identifica a cada persona
+Producto: Clave candidata Codigo. Clave primaria Codigo porque identifica cada articulo sin repetir
+Pedido: Clave candidata Numero_Pedido. Clave primaria Numero_Pedido porque distingue cada compra realizada
+Empleado: Clave candidata ID_Empleado (o Legajo). Clave primaria ID_Empleado porque es el codigo unico del trabajador
+
+Relaciones entre entidades
+Cliente realiza Pedido: Un cliente hace uno o varios pedidos. Cada pedido pertenece a un solo cliente
+Empleado atiende Pedido: Un empleado atiende varios pedidos. Cada pedido lo maneja un solo empleado
+Pedido contiene Producto: Un pedido puede llevar varios productos y un producto puede estar en varios pedidos. Esta relacion guarda la cantidad vendida
+
+Cardinalidad de cada relacion
+Cliente - Pedido: 1:N (un cliente hace muchos pedidos, cada pedido es de un solo cliente)
+Empleado - Pedido: 1:N (un empleado atiende muchos pedidos, cada pedido lo atiende un solo empleado)
+Pedido - Producto: N:M (un pedido tiene muchos productos, un producto esta en muchos pedidos)
+
+Atributos de las relaciones
+Si, el atributo es Cantidad. Pertenece a la relacion entre Pedido y Producto porque representa cuantas unidades de ese producto especifico se compraron en ese pedido
+
+Atributos multivaluados
+Si, el atributo Email en Cliente es multivaluado porque el enunciado dice que un cliente puede tener varios. En el esquema relacional se crea una tabla nueva llamada Cliente_Email con las columnas ID_Cliente y Email, donde la clave primaria son las dos columnas juntas (ID_Cliente, Email)
+
+Tablas del diccionario de datos (I)
+Tabla Cliente
+Atributos: ID_Cliente, Nombre, Direccion, Telefono
+PK: ID_Cliente
+FK: Ninguna
+
+Tabla Cliente_Email
+Atributos: ID_Cliente, Email
+PK: (ID_Cliente, Email)
+FK: ID_Cliente (apunta a Cliente.ID_Cliente)
+
+Tabla Producto
+Atributos: Codigo, Nombre, Precio, Stock
+PK: Codigo
+FK: Ninguna
+
+Tabla Empleado
+Atributos: ID_Empleado, Nombre
+PK: ID_Empleado
+FK: Ninguna
+
+Tabla Pedido
+Atributos: Numero_Pedido, Fecha, Estado, ID_Cliente, ID_Empleado
+PK: Numero_Pedido
+FK: ID_Cliente (apunta a Cliente.ID_Cliente), ID_Empleado (apunta a Empleado.ID_Empleado)
+
+Tablas del diccionario de datos (II)
+Tabla Pedido_Producto (Tabla intermedia para la relacion N:M entre Pedido y Producto)
+Atributos: Numero_Pedido, Codigo_Producto, Cantidad
+PK: (Numero_Pedido, Codigo_Producto)
+FK: Numero_Pedido (apunta a Pedido.Numero_Pedido), Codigo_Producto (apunta a Producto.Codigo)
+
+Listado final de tablas
+Tabla Cliente
+Atributos: ID_Cliente, Nombre, Direccion, Telefono
+PK: ID_Cliente
+FK: Ninguna
+
+Tabla Cliente_Email
+Atributos: ID_Cliente, Email
+PK: (ID_Cliente, Email)
+FK: ID_Cliente (apunta a Cliente.ID_Cliente)
+
+Tabla Producto
+Atributos: Codigo, Nombre, Precio, Stock
+PK: Codigo
+FK: Ninguna
+
+Tabla Empleado
+Atributos: ID_Empleado, Nombre
+PK: ID_Empleado
+FK: Ninguna
+
+Tabla Pedido
+Atributos: Numero_Pedido, Fecha, Estado, ID_Cliente, ID_Empleado
+PK: Numero_Pedido
+FK: ID_Cliente (apunta a Cliente.ID_Cliente), ID_Empleado (apunta a Empleado.ID_Empleado)
+
+Tabla Pedido_Producto
+Atributos: Numero_Pedido, Codigo_Producto, Cantidad
+PK: (Numero_Pedido, Codigo_Producto)
+FK: Numero_Pedido (apunta a Pedido.Numero_Pedido), Codigo_Producto (apunta a Producto.Codigo)
