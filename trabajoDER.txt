@@ -24,45 +24,19 @@ Cliente - Pedido: 1:N (un cliente hace muchos pedidos, cada pedido es de un solo
 Empleado - Pedido: 1:N (un empleado atiende muchos pedidos, cada pedido lo atiende un solo empleado)
 Pedido - Producto: N:M (un pedido tiene muchos productos, un producto esta en muchos pedidos)
 
-6-1)Atributos de las relaciones
+6)Atributos de las relaciones
 Si, el atributo es Cantidad. Pertenece a la relacion entre Pedido y Producto porque representa cuantas unidades de ese producto especifico se compraron en ese pedido
 
-6-2)Atributos multivaluados
+7)Atributos multivaluados
 Si, el atributo Email en Cliente es multivaluado porque el enunciado dice que un cliente puede tener varios. En el esquema relacional se crea una tabla nueva llamada Cliente_Email con las columnas ID_Cliente y Email, donde la clave primaria son las dos columnas juntas (ID_Cliente, Email)
 
-7)Tablas del diccionario de datos (1)
-Tabla Cliente
-Atributos: ID_Cliente, Nombre, Direccion, Telefono
-PK: ID_Cliente
-FK: Ninguna
+8)Tablas del diccionario de datos (1)
+NO VISTO
 
-Tabla Cliente_Email
-Atributos: ID_Cliente, Email
-PK: (ID_Cliente, Email)
-FK: ID_Cliente (apunta a Cliente.ID_Cliente)
+9)Tablas del diccionario de datos (2)
+NO VISTO
 
-Tabla Producto
-Atributos: Codigo, Nombre, Precio, Stock
-PK: Codigo
-FK: Ninguna
-
-Tabla Empleado
-Atributos: ID_Empleado, Nombre
-PK: ID_Empleado
-FK: Ninguna
-
-Tabla Pedido
-Atributos: Numero_Pedido, Fecha, Estado, ID_Cliente, ID_Empleado
-PK: Numero_Pedido
-FK: ID_Cliente (apunta a Cliente.ID_Cliente), ID_Empleado (apunta a Empleado.ID_Empleado)
-
-Tablas del diccionario de datos (2)
-Tabla Pedido_Producto (Tabla intermedia para la relacion N:M entre Pedido y Producto)
-Atributos: Numero_Pedido, Codigo_Producto, Cantidad
-PK: (Numero_Pedido, Codigo_Producto)
-FK: Numero_Pedido (apunta a Pedido.Numero_Pedido), Codigo_Producto (apunta a Producto.Codigo)
-
-8) Listado final de tablas
+10)Listado final de tablas
 Tabla Cliente
 Atributos: ID_Cliente, Nombre, Direccion, Telefono
 PK: ID_Cliente
