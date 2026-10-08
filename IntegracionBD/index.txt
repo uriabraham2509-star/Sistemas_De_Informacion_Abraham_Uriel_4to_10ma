@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integración SQL con Node.js y Express</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Registro de Usuarios</h1>
+
+  <form id="formUsuario">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required placeholder="Ej: Juan Pérez">
+
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" id="email" name="email" required placeholder="Ej: juan@example.com">
+
+    <button type="submit">Guardar Registro</button>
+  </form>
+
+  <h2>Usuarios Registrados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody id="tablaUsuarios">
+      <!-- Los registros se cargan dinámicamente -->
+    </tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('formUsuario');
+    const tabla = document.getElementById('tablaUsuarios');
+
+      async function cargarUsuarios() {
+      const res = await fetch('/api/usuarios');
+      const usuarios = await res.json();
+
+      tabla.innerHTML = '';
+      usuarios.forEach(u => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td>${u.id}</td>
+          <td>${u.nombre}</td>
+          <td>${u.email}</td>
+        `;
+        tabla.appendChild(fila);
+      });
+    }
+
+        form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nombre = document.getElementById('nombre').value;
+      const email = document.getElementById('email').value;
+
+      await fetch('/api/usuarios', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, email })
+      });
+
+      form.reset();
+      cargarUsuarios(); // Actualiza la tabla dinámicamente
+    });
+
+        cargarUsuarios();
+  </script>
+
+</body>
+</html>
+

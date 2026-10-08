@@ -1,0 +1,87 @@
+Conectores de Bases de Datos 
+
+¿Qué es un conector?
+
+El "conector" es SQLite compilado a WebAssembly (WASM) que se ejecuta dentro del navegador.
+
+El más usado se llama sql.js. Es literalmente el motor de SQLite (escrito en C) compilado a un archivo .wasm que el navegador descarga y ejecuta como JavaScript. No hay servidor, no hay puerto, no hay localhost. Todo ocurre en la pestaña del usuario.
+
+¿Cómo funciona?
+
+1. El navegador descarga sql-wasm.js y sql-wasm.wasm desde un CDN.
+2. initSqlJs() carga el motor SQLite en memoria.
+3. new SQL.Database() crea una base de datos en RAM (vacía o desde un archivo .sqlite cargado).
+4. Ejecutas SQL normal (CREATE, INSERT, SELECT…) con db.run() o db.exec().
+5. Si quieres persistir, exportas la BD como bytes y la guardas en localStorage o IndexedDB.
+
+¿Para qué sirve?
+
+· Prototipos y demos: probar SQL sin montar un servidor.
+
+· Apps offline / PWA: funcionan sin internet.
+
+· Educación: enseñar SQL en el navegador.
+
+· Un solo usuario: cada visitante tiene su propia BD local.
+
+Limitaciones:
+
+· ❌ No sirve para multiusuario ni aplicaciones web reales con datos compartidos.
+· ❌ Los datos se pierden si no los persistes manualmente.
+· ❌ No hay seguridad, autenticación ni concurrencia.
+
+¿Cómo insertar en una BD?
+
+   html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="email" placeholder="Email">
+    <button onclick="insertar()">Guardar</button>
+
+    <script>
+        let db;
+
+        // 1. Inicializar el "conector" (equivalente a cargar el driver JDBC)
+        initSqlJs({
+            locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+        }).then(function(SQL) {
+            // 2. Recuperar BD guardada o crear una nueva
+            const guardado = localStorage.getItem("mi_bd");
+            db = guardado
+                ? new SQL.Database(new Uint8Array(JSON.parse(guardado)))
+                : new SQL.Database();
+
+            // 3. Crear tabla si no existe
+            db.run(`CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre TEXT,
+                email TEXT
+            )`);
+        });
+
+        // 4. Función para insertar
+        function insertar() {
+            const nombre = document.getElementById("nombre").value;
+            const email  = document.getElementById("email").value;
+
+            // Consulta parametrizada (evita inyección SQL)
+            db.run(
+                "INSERT INTO usuarios (nombre, email) VALUES (?, ?)",
+                [nombre, email]
+            );
+
+            // Persistir en localStorage
+            localStorage.setItem("mi_bd", JSON.stringify(Array.from(db.export())));
+
+            alert("Registro insertado correctamente");
+        }
+    </script>
+</body>
+</html>
+

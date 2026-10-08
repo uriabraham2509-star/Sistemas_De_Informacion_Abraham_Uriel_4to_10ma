@@ -1,0 +1,46 @@
+const express = require('express');
+const Database = require('better-sqlite3');
+const path = require('path');
+
+const app = express();
+const PORT = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+const db = new Database('sistema.db');
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    email TEXT NOT NULL
+  )
+`);
+
+app.post('/api/usuarios', (req, res) => {
+  const { nombre, email } = req.body;
+
+  if (!nombre || !email) {
+    return res.status(400).json({ error: 'El nombre y el email son obligatorios.' });
+  }
+
+  const stmt = db.prepare('INSERT INTO usuarios (nombre, email) VALUES (?, ?)');
+  const result = stmt.run(nombre, email);
+
+  res.json({ id: result.lastInsertRowid, nombre, email });
+});
+
+app.get('/api/usuarios', (req, res) => {
+  const stmt = db.prepare('SELECT * FROM usuarios ORDER BY id DESC');
+  const usuarios = stmt.all();
+
+  res.json(usuarios);
+});
+
+
+app.listen(PORT, () => {
+  console.log(`Servidor activo en http://localhost:${PORT}`);
+});
+

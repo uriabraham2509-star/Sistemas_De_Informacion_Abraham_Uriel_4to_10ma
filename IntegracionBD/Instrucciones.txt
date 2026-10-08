@@ -1,0 +1,5 @@
+Conectores de Base de datos
+
+Gregurak: Manual de conector de BD (Explicacion del tema, explicación paso a paso sobre como insertar los conectores en la BD con imagenes en lo posible, link del video explicativo y links de programas utilizados en el proceso)
+Nahir: Explicacion (Explicacion sobre los conectores de bases de datos, como funcionan, para que funcionan y  como podemos insertarlos en una BD)
+Uriel: Video del paso a paso de como insertar el conector en la BD, explicacion de como funcionan los conectores y explicar que hizo cada participante en el trabajo (Debe durar 3 minutos como mínimo a 7 minutos como mucho).
